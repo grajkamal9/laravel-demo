@@ -76,6 +76,7 @@ Follow the instruction below to setting up your project.
 - To Clear the cache. go to php container using ```docker exec -it php /bin/sh``` and execute the commands
   ```php artisan cache:clear```
   ```php artisan config:clear```
+- Import the database.sql file to your database accordingly
 - Go to http://localhost:8001 or any port you set to open laravel
 
 
