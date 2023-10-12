@@ -29,18 +29,29 @@ CREATE TABLE IF NOT EXISTS `Customer` (
   `Pincode` longtext,
   `State` longtext,
   `Email` longtext,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`CustomerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table laravel_docker.Customer: ~7 rows (approximately)
-INSERT INTO `Customer` (`CustomerId`, `ContactNo`, `FirstName`, `LastName`, `Street`, `Pincode`, `State`, `Email`) VALUES
-	(1, '1234567890', 'Karl', 'Hans', 'Main Street 123', '12345', 'Bavaria', 'karl.hans@email.com'),
-	(2, '9876543210', 'Anna', 'Schmidt', 'Park Avenue 456', '54321', 'Berlin', 'anna.schmidt@email.com'),
-	(3, '5555555555', 'Thomas', 'Müller', 'Forest Road 789', '67890', 'Bavaria', 'thomas.muller@email.com'),
-	(4, '1234567891', 'John', 'Doe', 'Oak Street 456', '56789', 'Bavaria', 'john.doe@email.com'),
-	(5, '9876543211', 'Emily', 'Smith', 'Willow Avenue 789', '98765', 'Berlin', 'emily.smith@email.com'),
-	(6, '5555555556', 'Sophia', 'Miller', 'Maple Road 123', '45678', 'Bavaria', 'sophia.miller@email.com'),
-	(7, '1234567890', 'first name', 'last name', 'lake view', '1234565', 'Bavaria', 'test@test.com');
+-- Dumping data for table laravel_docker.Customer: ~15 rows (approximately)
+INSERT INTO `Customer` (`CustomerId`, `ContactNo`, `FirstName`, `LastName`, `Street`, `Pincode`, `State`, `Email`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-10 10:38:38'),
+	(2, '9876543210', 'Anna', 'Schmidt', 'Park Avenue 456', '54321', 'Berlin', 'anna.schmidt@email.com', NULL, NULL, NULL),
+	(3, '5555555555', 'Thomas', 'Müller', 'Forest Road 789', '67890', 'Bavaria', 'thomas.muller@email.com', NULL, NULL, NULL),
+	(4, '1234567891', 'John', 'Doe', 'Oak Street 456', '56789', 'Bavaria', 'john.doe@email.com', NULL, NULL, NULL),
+	(5, '9876543211', 'Emily', 'Smith', 'Willow Avenue 789', '98765', 'Berlin', 'emily.smith@email.com', NULL, NULL, NULL),
+	(6, '5555555556', 'Sophia', 'Miller', 'Maple Road 123', '45678', 'Bavaria', 'sophia.miller@email.com', NULL, NULL, NULL),
+	(7, '1234567890', 'first name', 'last name', 'lake view', '1234565', 'Bavaria', 'test@test.com', NULL, NULL, NULL),
+	(8, '1234567890', 'first test1', 'last test1', 'lake view', '12456789', 'Bavaria', 'test1@test.com', NULL, NULL, NULL),
+	(12, '1234567890', 'first test2', 'last test2', 'lake view', '12456789', 'Bavaria', 'test2@test.com', NULL, NULL, NULL),
+	(13, '123456789', 'first test3', 'last test3', 'lake view', '12456789', 'Bavaria', 'test31@test.com', NULL, NULL, '2023-10-12 07:43:52'),
+	(14, '1234567890', 'first test4', 'last test4', 'lake view', '12456789', 'Bavaria', 'test4@test.com', NULL, NULL, '2023-10-10 14:37:30'),
+	(19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-10 14:39:45'),
+	(20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-10 14:40:36'),
+	(21, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-10 14:40:43'),
+	(22, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-10 14:40:12');
 
 -- Dumping structure for table laravel_docker.CustomerLoanProperty
 CREATE TABLE IF NOT EXISTS `CustomerLoanProperty` (
@@ -89,18 +100,21 @@ CREATE TABLE IF NOT EXISTS `Loan` (
   `InstallmentAmount` double DEFAULT NULL,
   `LoanStartDate` longtext,
   `LoanEndDate` longtext,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`LoanId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table laravel_docker.Loan: ~7 rows (approximately)
-INSERT INTO `Loan` (`LoanId`, `CustomerId`, `Bank`, `LoanAmount`, `IntrestRate`, `IntrestBanking`, `RepaymentAmount`, `InstallmentAmount`, `LoanStartDate`, `LoanEndDate`) VALUES
-	(1, 1, 'Bank of Munich', 10000, 5, 1, 1200, 300, '2023-01-15', '2024-01-15'),
-	(2, 1, 'Berlin Bank', 8000, 4.5, 0, 1000, 250, '2023-02-20', '2024-02-20'),
-	(3, 1, 'Hamburg Bank', 15000, 6, 1, 1800, 450, '2023-03-25', '2024-03-25'),
-	(4, 2, 'Bank of Munich', 12000, 5.5, 0, 1400, 350, '2023-02-10', '2024-02-10'),
-	(5, 4, 'Bank of Munich', 50000, 1.1, 0, 6600, 550, '2020-01-01', '2024-12-01'),
-	(6, 5, 'Berlin Bank', 75000, 2.1, 0, 8250, 550, '2020-01-01', '2029-12-01'),
-	(7, 6, 'Hamburg Bank', 100000, 3.1, 0, 10000, 550, '2020-01-01', '2034-12-01');
+INSERT INTO `Loan` (`LoanId`, `CustomerId`, `Bank`, `LoanAmount`, `IntrestRate`, `IntrestBanking`, `RepaymentAmount`, `InstallmentAmount`, `LoanStartDate`, `LoanEndDate`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'Bank of Munich', 10000, 5, 1, 1200, 300, '2023-01-15', '2024-01-15', NULL, NULL, NULL),
+	(2, 1, 'Berlin Bank', 8000, 4.5, 0, 1000, 250, '2023-02-20', '2024-02-20', NULL, NULL, NULL),
+	(3, 1, 'Hamburg Bank', 15000, 6, 1, 1800, 450, '2023-03-25', '2024-03-25', NULL, NULL, NULL),
+	(4, 2, 'Bank of Munich', 12000, 5.5, 0, 1400, 350, '2023-02-10', '2024-02-10', NULL, NULL, NULL),
+	(5, 4, 'Bank of Munich', 50000, 1.1, 0, 6600, 550, '2020-01-01', '2024-12-01', NULL, NULL, NULL),
+	(6, 5, 'Berlin Bank', 75000, 2.1, 0, 8250, 550, '2020-01-01', '2029-12-01', NULL, NULL, NULL),
+	(7, 6, 'Hamburg Bank', 100000, 3.1, 0, 10000, 550, '2020-01-01', '2034-12-01', NULL, NULL, NULL);
 
 -- Dumping structure for table laravel_docker.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -108,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table laravel_docker.migrations: ~9 rows (approximately)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -184,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `oauth_personal_access_clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel_docker.oauth_personal_access_clients: ~1 rows (approximately)
+-- Dumping data for table laravel_docker.oauth_personal_access_clients: ~0 rows (approximately)
 INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
 	(1, '9a1b9551-1b54-4976-b678-70e4448fddf3', '2023-09-11 11:43:19', '2023-09-11 11:43:19');
 
@@ -231,22 +245,35 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 
 -- Dumping structure for table laravel_docker.Property
 CREATE TABLE IF NOT EXISTS `Property` (
-  `PropertyId` int NOT NULL,
+  `PropertyId` int NOT NULL AUTO_INCREMENT,
   `CustomerId` int NOT NULL,
   `Street` longtext,
   `Pincode` longtext,
   `State` longtext,
   `PropertySize` longtext,
   `Cost` double DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`PropertyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table laravel_docker.Property: ~4 rows (approximately)
-INSERT INTO `Property` (`PropertyId`, `CustomerId`, `Street`, `Pincode`, `State`, `PropertySize`, `Cost`) VALUES
-	(1, 1, 'Garden View 1', '12345', 'Bavaria', '120 sqm', 300000),
-	(2, 1, 'Mountain Side 23', '12345', 'Bavaria', '180 sqm', 450000),
-	(3, 2, 'City Center 45', '54321', 'Berlin', '90 sqm', 250000),
-	(4, 3, 'Lakefront 67', '67890', 'Bavaria', '200 sqm', 600000);
+-- Dumping data for table laravel_docker.Property: ~14 rows (approximately)
+INSERT INTO `Property` (`PropertyId`, `CustomerId`, `Street`, `Pincode`, `State`, `PropertySize`, `Cost`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'Garden View 1', '12345', 'Bavaria', '120 sqm', 300000, NULL, NULL, '2023-10-12 15:10:54'),
+	(2, 1, 'Mountain Side 23', '12345', 'Bavaria', '180 sqm', 450000, NULL, NULL, '2023-10-12 15:10:57'),
+	(3, 2, 'City Center 45', '54321', 'Berlin', '90 sqm', 250000, NULL, NULL, NULL),
+	(4, 3, 'Lakefront 67', '67890', 'Bavaria', '200 sqm', 600000, NULL, NULL, NULL),
+	(5, 13, 'Garden View 1', '12345', 'Bavaria', '120 sqm', 300000, NULL, NULL, '2023-10-12 07:43:52'),
+	(6, 13, 'lake VIEW', '12346', NULL, '120 sqm', 300000, NULL, NULL, '2023-10-12 07:43:52'),
+	(7, 13, 'lake VIEW', '123456', NULL, '120 sqm', 300000, NULL, NULL, '2023-10-12 07:43:52'),
+	(8, 13, 'lake VIEW', '123456', NULL, '120 sqm', 300000, NULL, NULL, '2023-10-12 07:43:52'),
+	(9, 13, 'lake VIEW', '12345678', NULL, '120 sqm', 300000, NULL, NULL, '2023-10-12 07:43:52'),
+	(10, 14, 'lake view', NULL, 'Bavaria', '120 sqm', 300000, NULL, NULL, NULL),
+	(11, 1, 'lake view', '124567', 'Bavaria', '120 sqm', 400000, NULL, NULL, '2023-10-12 15:10:58'),
+	(12, 1, 'lake view', '124567', 'Bavaria', '120 sqm', 400000, NULL, NULL, '2023-10-12 15:11:00'),
+	(13, 2, 'Main Street 123', '12456789', 'Berlin', '120 sqm', 900000, NULL, NULL, NULL),
+	(14, 2, 'Main Street 123', '12456789', 'Berlin', '120 sqm', 900000, NULL, NULL, NULL);
 
 -- Dumping structure for table laravel_docker.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -262,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel_docker.users: ~1 rows (approximately)
+-- Dumping data for table laravel_docker.users: ~0 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'test', 'test@test.com', NULL, '$2y$10$Jg7UfxppAPZbmkOAuLGwFupGpSzEJFHdBO6Ute7CLpXQtVLZs5NgW', NULL, '2023-09-12 05:07:36', '2023-09-12 05:07:36');
 

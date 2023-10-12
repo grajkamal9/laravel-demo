@@ -105,7 +105,7 @@ class LoginRegisterController extends Controller
         {
             $customers = Customer::all();
             // dump($customers);exit;
-            return view('auth.dashboard', ['data' => $customers]);
+            return view('admin.dashboard', ['data' => $customers]);
         }
         
         return redirect()->route('login')

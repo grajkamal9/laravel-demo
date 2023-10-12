@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PropertyController;
 Use App\Models\Customer;
 
 
@@ -26,9 +28,20 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', 'logout')->name('logout');
+   
 });
 
-Route::post('/customers/save', function (Request $request) {
-    // dump($request->all());
-    Customer::create($request->all());
-})->name('saveCustomer');
+Route::match(['get'], '/customers/{id?}', [CustomerController::class, 'index'])->name('customers');
+
+Route::post('/customers/save', [CustomerController::class, 'store'])->name('saveCustomer');
+
+Route::post('/customers/edit', [CustomerController::class, 'edit'])->name('editCustomer');
+
+
+Route::get('/customers/delete/{CutomerId?}', [CustomerController::class, 'delete'])->name('deleteCustomer');
+
+
+Route::get('/properties', [PropertyController::class, 'index'])->name('properties');
+
+Route::post('/property/save', [PropertyController::class, 'store'])->name('saveProperty');
+
