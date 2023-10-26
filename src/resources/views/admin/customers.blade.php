@@ -45,7 +45,7 @@
 					<td>{{$item->Pincode}}</td>
 					<td>{{$item->State}}</td>
 					<td>{{$item->Email}}</td>
-					<td><span class="edit-modal"
+					<td><span class="edit-customer-modal"
 							data-info-CustomerId="{{$item->CustomerId}}"
 							data-info-ContactNo="{{$item->ContactNo}}"
 							data-info-FirstName="{{$item->FirstName}}"
@@ -56,12 +56,26 @@
 							data-info-Email="{{$item->Email}}">
 							<i class="fa fa-edit"></i>
 						</span>
-						<span class="delete-modal"
+						<span class="delete-customer-modal"
 							data-info-CustomerId="{{$item->CustomerId}}">
 							<i class="fa fa-trash"></i>
 						</span></td>
 				</tr>
 				@endforeach
+
+				<tfoot>
+					<tr>
+						<th class="text-center">CustomerId</th>
+						<th class="text-center">ContactNo</th>
+						<th class="text-center">FirstName</th>
+						<th class="text-center">LastName</th>
+						<th class="text-center">Street</th>
+						<th class="text-center">Pincode</th>
+						<th class="text-center">State</th>
+						<th class="text-center">Email</th>
+						<th class="hide"></th>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>
@@ -267,6 +281,15 @@
 
 	<link href="{{ asset('css/custom-popup.css') }}" rel="stylesheet" />
 	<!-- <link href="{{ asset('css/custom-popup.css') }}" rel="stylesheet" /> -->
-    
+    <style>
+		tfoot input {
+			width: 100%;
+			padding: 3px;
+			box-sizing: border-box;
+		}
+		tfoot .hide input{
+			display: none;
+		}
+	</style>
 @endsection
 

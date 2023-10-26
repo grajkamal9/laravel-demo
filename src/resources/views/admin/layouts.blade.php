@@ -147,7 +147,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Weiß Immobiliengruppe 2023</div>
+                            <div class="text-muted">Copyright &copy; Weiß Immobiliengruppe <?php echo date('Y'); ?></div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
@@ -178,7 +178,7 @@
             $(window).on('load', function(){
                 @if(!empty($data['id']))
                     setTimeout(function() {
-                        $('.edit-modal[data-info-customerid="{{ $data['id'] }}"]').closest(".edit-modal").click();
+                        $('.edit-customer-modal[data-info-customerid="{{ $data['id'] }}"]').closest(".edit-customer-modal").click();
                         $('#editCustomer input').attr('disabled', 'disabled');
                         $('#editCustomer input[type="submit"]').hide();
                     }, 10);
@@ -198,10 +198,10 @@
 
                 
 
-                $(document).on('click', '.edit-modal', function () {
+                $(document).on('click', '.edit-customer-modal', function () {
                     $('#editCustomer input').removeAttr('disabled');
                     $('#editCustomer input[type="submit"]').show();
-                    // console.log('edit-modal', $(this).attr('data-info-CustomerId'));
+                    // console.log('edit-customer-modal', $(this).attr('data-info-CustomerId'));
                     $('#editCustomer').modal('show');
 
                     $('#editCustomerForm [name="CustomerId"]').val($(this).attr('data-info-CustomerId'));
@@ -214,35 +214,56 @@
                     $('#editCustomerForm [name="State"]').val($(this).attr('data-info-State'));
                 });
 
+                $(document).on('click', '.edit-property-modal', function () {
+                    $('#editPropertyForm input').removeAttr('disabled');
+                    $('#editPropertyForm input[type="submit"]').show();
+                    // console.log('edit-customer-modal', $(this).attr('data-info-CustomerId'));
+                    $('#editProperty').modal('show');
+
+                    $('#editPropertyForm select[name="CustomerId"] option[value=' + $(this).attr('data-info-CustomerId') + ']').attr('selected', 'selected');
+                    
+                    $('#editPropertyForm [name="Street"]').val($(this).attr('data-info-Street'));
+                    $('#editPropertyForm [name="Pincode"]').val($(this).attr('data-info-Pincode'));
+                    $('#editPropertyForm [name="State"]').val($(this).attr('data-info-State'));
+                    $('#editPropertyForm [name="PropertySize"]').val($(this).attr('data-info-PropertySize'));
+                    $('#editPropertyForm [name="Cost"]').val($(this).attr('data-info-Cost'));
+                    $('#editPropertyForm [name="PropertyId"]').val($(this).attr('data-info-PropertyId'));
+                    
+                });
+
                 
-                $(document).on('click', '.delete-modal', function (e) {
+                $(document).on('click', '.delete-customer-modal', function (e) {
                     // var $form = $(this).closest('form');
                     e.preventDefault();
                     $('#confirmModal').modal('show');
                     $('#confirmModal #delete').attr('data-info-CustomerId', $(this).attr('data-info-CustomerId'));
                     $(document).on('click', '#confirmModal #delete', function(e) {
-                        // $form.trigger('submit');
                         $('#confirmModal').modal('hide');
-                        //write code here
                         console.log('on delete');
                         let CustomerId = $('#confirmModal #delete').attr('data-info-CustomerId');
-                        // $.ajax({
-                        //     method: "GET",
-                        //     url: "{{ route('deleteCustomer') }}",
-                        //     data: {
-                        //         'CustomerId': $('#confirmModal #delete').attr('data-info-CustomerId')
-                        //     },
-                        //     dataType: 'JSON',
-                        // }).done(function (data) {
-                        //     // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
-                        //     // $('#editCustomerForm .alert').show();
-                        //     location = "{{ route('customers') }}";
-                        // }).fail(function(data){
-                        //     alert("Try again champ!");
-                        // });
                         $.get("{{ route('deleteCustomer') }}" + '/' + CustomerId, function(data, status){
                             console.log(status)
                             location = "{{ route('customers') }}";
+                        });
+                    });
+                    $("#confirmModal #cancel").on('click',function(e){
+                        e.preventDefault();
+                        $('#confirmModal').model('hide');
+                    });
+                });
+
+                $(document).on('click', '.delete-property-modal', function (e) {
+                    // var $form = $(this).closest('form');
+                    e.preventDefault();
+                    $('#confirmModal').modal('show');
+                    $('#confirmModal #delete').attr('data-info-PropertyId', $(this).attr('data-info-PropertyId'));
+                    $(document).on('click', '#confirmModal #delete', function(e) {
+                        $('#confirmModal').modal('hide');
+                        console.log('on delete');
+                        let PropertyId = $('#confirmModal #delete').attr('data-info-PropertyId');
+                        $.get("{{ route('deleteProperty') }}" + '/' + PropertyId, function(data, status){
+                            console.log(status)
+                            location = "{{ route('properties') }}";
                         });
                     });
                     $("#confirmModal #cancel").on('click',function(e){
@@ -261,6 +282,11 @@
             $(document).on('submit', '#editCustomerForm', function (e) {
                     e.preventDefault();
                     editCustomerForm();
+            });
+
+            $(document).on('submit', '#editPropertyForm', function (e) {
+                    e.preventDefault();
+                    editPropertyForm();
             });
 
             $(document).on('submit', '#PropertyForm', function (e) {
@@ -311,6 +337,39 @@
                 }).done(function (data) {
                     // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
                     $('#editCustomerForm .alert').show();
+                    setTimeout(function() {
+                        location = "{{ route('customers') }}";
+                    }, 15);
+                }).fail(function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR, textStatus);
+                    alert("Error in processing");
+                });
+            }
+
+            function editPropertyForm() {
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('editProperty') }}",
+                    data: {
+                        //CustomerId Street Pincode State PropertySize Cost PropertyId
+                        'CustomerId': $('#editPropertyForm [name="CustomerId"]').val(),
+                        'Street': $('#editPropertyForm [name="Street"]').val(),
+                        'Pincode': $('#editPropertyForm [name="Pincode"]').val(),
+                        'State': $('#editPropertyForm [name="State"]').val(),
+
+                        'PropertySize': $('#editPropertyForm [name="PropertySize"]').val(),
+                        'Cost': $('#editPropertyForm [name="Cost"]').val(),
+                        'PropertyId': $('#editPropertyForm [name="PropertyId"]').val(),
+                        // 'Email': $('#editPropertyForm [name="Email"]').val(),
+                        // '_token': "{{ csrf_token() }}"
+                    },
+                    dataType: 'JSON',
+                }).done(function (data) {
+                    // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
+                    $('#editPropertyForm .alert').show();
+                    setTimeout(function() {
+                        location = "{{ route('properties') }}";
+                    }, 15);
                 }).fail(function(jqXHR, textStatus, errorThrown){
                     console.log(jqXHR, textStatus);
                     alert("Error in processing");

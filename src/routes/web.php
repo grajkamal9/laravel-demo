@@ -45,3 +45,6 @@ Route::get('/properties', [PropertyController::class, 'index'])->name('propertie
 
 Route::post('/property/save', [PropertyController::class, 'store'])->name('saveProperty');
 
+Route::post('/property/edit', [PropertyController::class, 'edit'])->name('editProperty');
+
+Route::get('/property/delete/{propertyId?}', [PropertyController::class, 'delete'])->name('deleteProperty');

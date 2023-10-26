@@ -51,4 +51,35 @@ class PropertyController extends Controller
         return response($property, Response::HTTP_OK); 
     }
 
+    function edit(Request $request) {
+        // $customer = Customer::create($request->all());
+        
+        //CustomerId Street Pincode State PropertySize Cost PropertyId
+        
+        
+        $property = Property::find($request->input('PropertyId'));
+        
+        $property->Street = $request->input('Street');
+        $property->Pincode = $request->input('Pincode');
+        $property->State = $request->input('State');
+        $property->PropertySize = $request->input('PropertySize');
+        $property->Cost = $request->input('Cost');
+        $property->CustomerId = $request->input('CustomerId');
+
+        $property->save(); 
+
+        return response($property, Response::HTTP_OK); 
+    }
+
+    function delete(?string $PropertyId = null) {
+
+        if(!empty($PropertyId)){
+            $response = Property::where('PropertyId', $PropertyId)->delete();
+        }else{
+            return response([], Response::HTTP_BAD_REQUEST); 
+        }
+
+        return response($response, Response::HTTP_OK); 
+    }
+
 }
