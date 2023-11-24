@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    new DataTable('#customers', {
+    new DataTable('#customers, #properties, #loans', {
         initComplete: function () {
             this.api()
                 .columns()
@@ -22,28 +22,28 @@ $(document).ready(function () {
                 });
         }
     });
-    new DataTable('#properties', {
-        initComplete: function () {
-            this.api()
-                .columns()
-                .every(function () {
-                    let column = this;
-                    let title = column.footer().textContent;
+    // new DataTable('#properties', {
+    //     initComplete: function () {
+    //         this.api()
+    //             .columns()
+    //             .every(function () {
+    //                 let column = this;
+    //                 let title = column.footer().textContent;
      
-                    // Create input element
-                    let input = document.createElement('input');
-                    input.placeholder = title;
-                    column.footer().replaceChildren(input);
+    //                 // Create input element
+    //                 let input = document.createElement('input');
+    //                 input.placeholder = title;
+    //                 column.footer().replaceChildren(input);
      
-                    // Event listener for user input
-                    input.addEventListener('keyup', () => {
-                        if (column.search() !== this.value) {
-                            column.search(input.value).draw();
-                        }
-                    });
-                });
-        }
-    });
+    //                 // Event listener for user input
+    //                 input.addEventListener('keyup', () => {
+    //                     if (column.search() !== this.value) {
+    //                         column.search(input.value).draw();
+    //                     }
+    //                 });
+    //             });
+    //     }
+    // });
 });
 
 $('.modal-footer').on('click', '.edit', function () {
@@ -128,6 +128,23 @@ $(document).ready(function () {
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
 
+        if (current == 1) {
+            let error = saveCustomer();
+            if(error){
+                return;
+            }
+        } else if (current == 2) {
+            let error = saveProperty();
+            if(error){
+                return;
+            }
+        } else if (current == 3) {
+            let error = saveLoan();
+            if(error){
+                return;
+            }
+        }
+
         //Add Class Active
         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
@@ -147,11 +164,7 @@ $(document).ready(function () {
             },
             duration: 500
         });
-        if (current == 1) {
-            saveCustomer();
-        } else if (current == 2) {
-            saveProperty();
-        }
+        
         setProgressBar(++current);
     });
 

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\LoanController;
 Use App\Models\Customer;
 
 
@@ -41,10 +42,19 @@ Route::post('/customers/edit', [CustomerController::class, 'edit'])->name('editC
 Route::get('/customers/delete/{CutomerId?}', [CustomerController::class, 'delete'])->name('deleteCustomer');
 
 
-Route::get('/properties', [PropertyController::class, 'index'])->name('properties');
+Route::get('/properties/{id?}', [PropertyController::class, 'index'])->name('properties');
 
 Route::post('/property/save', [PropertyController::class, 'store'])->name('saveProperty');
 
 Route::post('/property/edit', [PropertyController::class, 'edit'])->name('editProperty');
 
 Route::get('/property/delete/{propertyId?}', [PropertyController::class, 'delete'])->name('deleteProperty');
+
+
+Route::get('/loans', [LoanController::class, 'index'])->name('loans');
+
+Route::post('/loan/save', [LoanController::class, 'store'])->name('saveLoan');
+
+Route::post('/loan/edit', [LoanController::class, 'edit'])->name('editLoan');
+
+Route::get('/loan/delete/{loanId?}', [LoanController::class, 'delete'])->name('deleteLoan');

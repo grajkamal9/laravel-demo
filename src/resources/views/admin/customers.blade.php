@@ -110,7 +110,7 @@
 												<div class="col-5">
 													<h2 class="steps">Step 1 - 4</h2>
 												</div>
-												<!-- ContactNo, FirstName, LastName, Street, Pincode, State, Email -->
+												<!-- FirstName, LastName, ContactNo, Street, Pincode, State, Email -->
 											</div>  
 											<label class="fieldlabels">First Name: *</label> 
 											<input type="text" name="FirstName" placeholder="First Name" required/> 
@@ -162,7 +162,32 @@
 												<div class="col-5">
 													<h2 class="steps">Step 3 - 4</h2>
 												</div>
-											</div> <label class="fieldlabels">Upload Your Photo:</label> <input type="file" name="pic" accept="image/*"> <label class="fieldlabels">Upload Signature Photo:</label> <input type="file" name="pic" accept="image/*">
+											</div> 
+
+											<!-- `LoanId`,  `CustomerId`, LEFT(`Bank`, 256),  `LoanAmount`,  `IntrestRate`,  `IntrestBanking`,  `RepaymentAmount`,  `InstallmentAmount`, LEFT(`LoanStartDate`, 256), LEFT(`LoanEndDate`, 256), -->
+											<!-- <label class="fieldlabels">LoanAmount: *</label>
+											<input type="text" name="LoanAmount" placeholder="LoanAmount" required/> -->
+											<label class="fieldlabels">Bank: *</label>
+											<input type="text" name="Bank" placeholder="Bank" required/>
+											<label class="fieldlabels">LoanAmount: *</label>
+											<input type="text" name="LoanAmount" placeholder="LoanAmount" required/>
+											<label class="fieldlabels">IntrestRate: *</label> 
+											<input type="text" name="IntrestRate" placeholder="IntrestRate" required/> 
+											<label class="fieldlabels">IntrestBanking: *</label>
+											<input type="text" name="IntrestBanking" placeholder="IntrestBanking" required/> 
+											<label class="fieldlabels">RepaymentAmount: *</label> 
+											<input type="text" name="RepaymentAmount" placeholder="RepaymentAmount" required/>
+											<label class="fieldlabels">InstallmentAmount: *</label>
+											<input type="text" name="InstallmentAmount" placeholder="InstallmentAmount" required/>
+											<label class="fieldlabels">LoanStartDate: *</label> 
+											<input type="text" name="LoanStartDate" placeholder="LoanStartDate" required/>
+											<label class="fieldlabels">LoanEndDate: *</label>
+											<input type="text" name="LoanEndDate" placeholder="LoanEndDate" required/>
+
+											<!-- 
+												<input type="hidden" name="CustomerId" /> -->
+											<input type="hidden" name="PropertyId" />
+
 										</div> <input type="button" name="next" class="next action-button" value="Submit" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 									</fieldset>
 									<fieldset>

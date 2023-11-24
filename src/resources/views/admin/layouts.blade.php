@@ -167,13 +167,71 @@
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"> -->
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        
         <script src="{{ asset('js/scripts.js') }}"></script>
         <script src="{{ asset('js/custom-popup.js') }}"></script>
+        
 
         <script>
+            //https://validatejs.org/
+            // FirstName, LastName, ContactNo, Street, Pincode, State, Email
+            var constraints = {
+                        FirstName: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        },
+                        LastName: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        },
+                        ContactNo: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        },
+                        Email: {
+                            email: true
+                        },
+                        Street: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        },
+                        Pincode: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        },
+                        State: {
+                            presence: true,
+                            length: {
+                                minimum: 3,
+                                message: "must be at least 6 characters"
+                            }
+                        }
+                    };
+            
+            validate.formatters.custom = function(errors) {
+                return errors.map(function(error) {
+                    return error.validator;
+                });
+            };
 
             $(window).on('load', function(){
                 @if(!empty($data['id']))
@@ -231,6 +289,28 @@
                     
                 });
 
+                $(document).on('click', '.edit-loan-modal', function () {
+                    $('#editLoanForm input').removeAttr('disabled');
+                    $('#editLoanForm input[type="submit"]').show();
+                    // console.log('edit-customer-modal', $(this).attr('data-info-CustomerId'));
+                    $('#editLoan').modal('show');
+
+                    $('#editLoanForm [name="LoanId"]').val($(this).attr('data-info-LoanId'));
+                    $('#editLoanForm select[name="CustomerId"] option[value=' + $(this).attr('data-info-CustomerId') + ']').attr('selected', 'selected');
+                    if($(this).attr('data-info-PropertyId') != ''){
+                        $('#editLoanForm select[name="PropertyId"] option[value=' + $(this).attr('data-info-PropertyId') + ']').attr('selected', 'selected');
+                    }
+                    $('#editLoanForm [name="Bank"]').val($(this).attr('data-info-Bank'));
+                    $('#editLoanForm [name="LoanAmount"]').val($(this).attr('data-info-LoanAmount'));
+                    $('#editLoanForm [name="IntrestRate"]').val($(this).attr('data-info-IntrestRate'));
+                    $('#editLoanForm [name="IntrestBanking"]').val($(this).attr('data-info-IntrestBanking'));
+                    $('#editLoanForm [name="RepaymentAmount"]').val($(this).attr('data-info-RepaymentAmount'));
+                    $('#editLoanForm [name="InstallmentAmount"]').val($(this).attr('data-info-InstallmentAmount'));
+                    $('#editLoanForm [name="LoanStartDate"]').val($(this).attr('data-info-LoanStartDate'));
+                    $('#editLoanForm [name="LoanEndDate"]').val($(this).attr('data-info-LoanEndDate'));
+                    
+                });
+
                 
                 $(document).on('click', '.delete-customer-modal', function (e) {
                     // var $form = $(this).closest('form');
@@ -272,6 +352,27 @@
                     });
                 });
 
+                $(document).on('click', '.delete-loan-modal', function (e) {
+                    // var $form = $(this).closest('form');
+                    e.preventDefault();
+                    $('#confirmModal').modal('show');
+                    $('#confirmModal #delete').attr('data-info-LoanId', $(this).attr('data-info-LoanId'));
+                    $(document).on('click', '#confirmModal #delete', function(e) {
+                        $('#confirmModal').modal('hide');
+                        console.log('on delete loan');
+                        let LoanId = $('#confirmModal #delete').attr('data-info-LoanId');
+                        $.get("{{ route('deleteLoan') }}" + '/' + LoanId, function(data, status){
+                            console.log(status)
+                            location = "{{ route('loans') }}";
+                        });
+                    });
+                    $("#confirmModal #cancel").on('click',function(e){
+                        e.preventDefault();
+                        $('#confirmModal').model('hide');
+                    });
+                });
+
+
                 $(document).on('click', '#add_property', function () {
                     $('#addProperty').modal('show');
                 });
@@ -289,6 +390,11 @@
                     editPropertyForm();
             });
 
+            $(document).on('submit', '#editLoanForm', function (e) {
+                    e.preventDefault();
+                    editLoanForm();
+            });
+
             $(document).on('submit', '#PropertyForm', function (e) {
                 e.preventDefault();
                 savePropertyForm();
@@ -296,10 +402,8 @@
 
             // ContactNo, FirstName, LastName, Street, Pincode, State, Email
             function saveCustomer() {
-                $.ajax({
-                    method: "POST",
-                    url: "{{ route('saveCustomer') }}",
-                    data: {
+                let error = false;
+                let data = {
                         'FirstName': $('#addMultiformData [name="FirstName"]').val(),
                         'LastName': $('#addMultiformData [name="LastName"]').val(),
                         'ContactNo': $('#addMultiformData [name="ContactNo"]').val(),
@@ -308,14 +412,27 @@
                         'Pincode': $('#addMultiformData [name="Pincode"]').val(),
                         'State': $('#addMultiformData [name="State"]').val(),
                         // '_token': "{{ csrf_token() }}"
-                    },
+                    };
+//                     $('#addMultiformData').validate(data, constraints);
+// //                 let errors = $('#addMultiformData').validate(data, constraints);
+// // console.log(errors);
+//                 return;
+
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('saveCustomer') }}",
+                    data: data,
                     dataType: 'JSON',
+                    async: false,
                 }).done(function (data) {
                     $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
-                }).fail(function(data){
-                    console.log(jqXHR, textStatus);
+                    error = false;
+                }).fail(function(jqXHR, textStatus, errorThrown){
                     alert("Error in processing");
+                    error = true;
                 });
+
+                return error;
             }
 
             function editCustomerForm() {
@@ -334,6 +451,7 @@
                         // '_token': "{{ csrf_token() }}"
                     },
                     dataType: 'JSON',
+                    async: false,
                 }).done(function (data) {
                     // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
                     $('#editCustomerForm .alert').show();
@@ -364,6 +482,7 @@
                         // '_token': "{{ csrf_token() }}"
                     },
                     dataType: 'JSON',
+                    async: false,
                 }).done(function (data) {
                     // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
                     $('#editPropertyForm .alert').show();
@@ -376,8 +495,45 @@
                 });
             }
 
-            function saveProperty(){
+            function editLoanForm() {
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('editLoan') }}",
+                    data: {
+ //CustomerId, PropertyId, Bank, LoanAmount, IntrestRate, IntrestBanking, RepaymentAmount, InstallmentAmount, LoanStartDate, LoanEndDate
 
+                        'LoanId': $('#editLoanForm [name="LoanId"]').val(),
+                        'CustomerId': $('#editLoanForm [name="CustomerId"]').val(),
+                        'PropertyId': $('#editLoanForm [name="PropertyId"]').val(),
+                        'Bank': $('#editLoanForm [name="Bank"]').val(),
+                        'LoanAmount': $('#editLoanForm [name="LoanAmount"]').val(),
+
+                        'IntrestRate': $('#editLoanForm [name="IntrestRate"]').val(),
+                        'IntrestBanking': $('#editLoanForm [name="IntrestBanking"]').val(),
+                        'RepaymentAmount': $('#editLoanForm [name="RepaymentAmount"]').val(),
+
+                        'InstallmentAmount': $('#editLoanForm [name="InstallmentAmount"]').val(),
+                        'LoanStartDate': $('#editLoanForm [name="LoanStartDate"]').val(),
+                        'LoanEndDate': $('#editLoanForm [name="LoanEndDate"]').val(),
+                        // 'Email': $('#editLoanForm [name="Email"]').val(),
+                        // '_token': "{{ csrf_token() }}"
+                    },
+                    dataType: 'JSON',
+                    async: false,
+                }).done(function (data) {
+                    // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
+                    $('#editLoanForm .alert').show();
+                    setTimeout(function() {
+                        location = "{{ route('loans') }}";
+                    }, 15);
+                }).fail(function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR, textStatus);
+                    alert("Error in processing");
+                });
+            }
+
+            function saveLoan(){
+                let error = false;
                 $.ajax({
                     method: "POST",
                     url: "{{ route('saveProperty') }}",
@@ -391,12 +547,18 @@
                         // '_token': "{{ csrf_token() }}"
                     },
                     dataType: 'JSON',
+                    async: false,
                 }).done(function (data) {
-                    $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
+                    // $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
+                    $('#addMultiformData [name="PropertyId"]').val(data.PropertyId);
+                    error = false;
                 }).fail(function(jqXHR, textStatus, errorThrown){
                     console.log(jqXHR, textStatus);
                     alert("Error in processing");
+                    error = true;
                 });
+
+                return error;
             }
 
             function savePropertyForm(){
@@ -414,12 +576,57 @@
                         // '_token': "{{ csrf_token() }}"
                     },
                     dataType: 'JSON',
+                    async: false,
                 }).done(function (data) {
                     // $('#CustomerForm [name="CustomerId"]').val(data.CustomerId);
-                }).fail(function(data){
-                    alert("Try again champ!");
+                }).fail(function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR, textStatus);
+                    alert("Error in processing");
                 });
             }
+
+            function saveLoan(){
+    //   `LoanId`,  `CustomerId`, LEFT(`Bank`, 256),  `LoanAmount`,  `IntrestRate`,  `IntrestBanking`,  `RepaymentAmount`,  `InstallmentAmount`, LEFT(`LoanStartDate`, 256), LEFT(`LoanEndDate`, 256),
+                let error = false;
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('saveLoan') }}",
+                    data: {
+                        'PropertyId': $('#addMultiformData [name="PropertyId"]').val(),
+                        'CustomerId': $('#addMultiformData [name="CustomerId"]').val(),
+                        'Bank': $('#addMultiformData [name="Bank"]').val(),
+                        'LoanAmount': $('#addMultiformData [name="LoanAmount"]').val(),
+                        'IntrestRate': $('#addMultiformData [name="IntrestRate"]').val(),
+                        'IntrestBanking': $('#addMultiformData [name="IntrestBanking"]').val(),
+
+                        'RepaymentAmount': $('#addMultiformData [name="RepaymentAmount"]').val(),
+                        'InstallmentAmount': $('#addMultiformData [name="InstallmentAmount"]').val(),
+                        'LoanStartDate': $('#addMultiformData [name="LoanStartDate"]').val(),
+                        'LoanEndDate': $('#addMultiformData [name="LoanEndDate"]').val(),
+                        // '_token': "{{ csrf_token() }}"
+                    },
+                    dataType: 'JSON',
+                    async: false,
+                }).done(function (data) {
+                    $('#addMultiformData [name="CustomerId"]').val(data.CustomerId);
+                    error = false;
+                }).fail(function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR, textStatus);
+                    alert("Error in processing");
+                    error = true;
+                });
+                return error;
+            }
+
+            $(document).on('change', 'form#LoanForm #CustomerId', function (e) {
+                    // e.preventDefault();
+                    // editCustomerForm();
+            });
+
+            $(document).on('click', '#add_loan', function () {
+                    $('#addLoan').modal('show');
+            });
+            
         </script>
     </body>
 </html>

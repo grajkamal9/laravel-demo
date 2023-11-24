@@ -45,6 +45,7 @@ class CustomerController extends Controller
     
     function store(Request $request) {
         // dump($request->all());
+        // return response([], Response::HTTP_BAD_REQUEST); 
         $customer = Customer::create($request->all());
 
         return response($customer, Response::HTTP_OK); 

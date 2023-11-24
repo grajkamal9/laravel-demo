@@ -6,24 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Property extends Model
+class CustomerLoanProperty extends Model
 {
     use SoftDeletes;
 
-    protected $table="Property";
-    protected $primaryKey = 'PropertyId';
+    protected $table="CustomerLoanProperty";
+    // protected $primaryKey = 'PropertyId';
     public $timestamps = false;
 
-    protected $fillable = [ 'CustomerId', 'Street', 'Pincode', 'State', 'PropertySize', 'Cost'];
+    protected $fillable = [ 'CustomerId', 'PropertyId', 'LoanId'];
 
 
     public function Customer()
     {
             return $this->belongsTo(Customer::class, 'CustomerId', 'CustomerId');
-    }
-
-    public function Loan()
-    {
-            return $this->belongsToMany(Loan::class, 'LoanId', 'LoanId');
     }
 }

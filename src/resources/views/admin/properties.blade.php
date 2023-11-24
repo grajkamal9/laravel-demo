@@ -117,6 +117,7 @@
                                             <label class="fieldlabels">CustomerId: *</label>
 											<!-- <input type="text" name="CustomerId" placeholder="CustomerId" /> -->
                                             <select name="CustomerId" id="CustomerId">
+												<option value="">SELECT</option>
                                                 @foreach($data['customers'] as $item)
                                                     <option value="{{$item->CustomerId}}">{{$item->FirstName}} {{$item->LastName}} #{{$item->CustomerId}}</option>
                                                 @endforeach
@@ -180,6 +181,7 @@
                                             <label class="fieldlabels">CustomerId: *</label>
 											<!-- <input type="text" name="CustomerId" placeholder="CustomerId" /> -->
                                             <select name="CustomerId" id="CustomerId">
+												<option value="">SELECT</option>
                                                 @foreach($data['customers'] as $item)
                                                     <option value="{{$item->CustomerId}}">{{$item->FirstName}} {{$item->LastName}} #{{$item->CustomerId}}</option>
                                                 @endforeach
